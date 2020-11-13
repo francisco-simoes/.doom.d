@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name:src_python_block
+# key:<sp
+# --
+#+begin_src python :session :results output silent
+`%`$0
+#+end_src
