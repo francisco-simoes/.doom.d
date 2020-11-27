@@ -58,4 +58,3 @@
 (package! lsp-pyright)
 (package! org-bullets)
 (package! org-fancy-priorities)
-(package! pdf-tools)

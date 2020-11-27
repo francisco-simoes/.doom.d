@@ -26,7 +26,9 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 ;;(setq doom-theme 'doom-one)
-(setq doom-theme 'doom-vibrant)
+;; (setq doom-theme 'doom-vibrant)
+(setq doom-theme 'doom-outrun-electric)
+;; (setq doom-theme 'doom-tomorrow-night)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -131,6 +133,9 @@
 ;;                           (require 'lsp-python-ms)
 ;;                           (lsp))))  ; or lsp-deferred
 
+;; No warning when opening Python REPL:
+(setq python-shell-prompt-detect-failure-warning nil)
+;; (setq python-shell-completion-native-enable nil) ; messes up venv...
 
 ;; Python linting
 (add-hook! 'lsp-mode-hook
@@ -234,33 +239,125 @@ checkboxes."
       (set-display-table-slot buffer-display-table
                               'selective-display
                               ;; (string-to-vector " ◦◦◦ "))))
-                              (string-to-vector " [↴↴↴] "))))
+                              ;; (string-to-vector " [↴↴↴] "))))
+                              (string-to-vector " ▼"))))
   (add-hook 'whitespace-mode-hook #'whitespace-change-ellipsis)
 
 
 ;; Pdf stuff
-(use-package pdf-tools
-  :ensure t
-  :config
-  (pdf-tools-install))
+;; (use-package pdf-tools
+;;   :ensure t
+;;   :config
+;;   (pdf-tools-install))
 ;; Export on save
 ;; (defun org-latex-continuous-export-to-pdf ()
 ;;         (interactive)
 ;;         (add-hook 'after-save-hook 'org-latex-export-to-pdf t t)
 ;;         (message "Auto-export enabled"))
-(defun org-export-pdf-then-open()
-   ;;(org-open-file (org-latex-export-to-pdf) t) ) ; open pdf in emacs.
-   (org-open-file t (org-latex-export-to-pdf)) ) ; open pdf in emacs.
-   ;; (org-open-file (org-latex-export-to-pdf)) )
-(defun org-continuous-export-to-pdf()
-  "auto export to pdf when saving an org file"
-  (interactive)
-  (when (eq major-mode 'org-mode)
-    (add-hook 'after-save-hook 'org-export-pdf-then-open t t)
-    )
-)
+;;
+;; (defun org-export-pdf-then-open()
+;;    ;;(org-open-file (org-latex-export-to-pdf) t) ) ; open pdf in emacs.
+;;    (org-open-file t (org-latex-export-to-pdf)) ) ; open pdf in emacs.
+;;    ;; (org-open-file (org-latex-export-to-pdf)) )
+;; (defun org-continuous-export-to-pdf()
+;;   "auto export to pdf when saving an org file"
+;;   (interactive)
+;;   (when (eq major-mode 'org-mode)
+;;     (add-hook 'after-save-hook 'org-export-pdf-then-open t t)
+;;     )
+;; )
+;; Font sizes for headings
+(dolist (face '((org-level-1 . 1.2)
+                (org-level-2 . 1.1)
+                (org-level-3 . 1.05)
+                (org-level-4 . 1.0)
+                (org-level-5 . 1.1)
+                (org-level-6 . 1.1)
+                (org-level-7 . 1.1)
+                (org-level-7 . 1.1)))
+  (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+
+;; Shorter global todo list
+(setq org-agenda-todo-list-sublevels nil)
+
+;; Don't dim blocked todos
+(setq org-agenda-dim-blocked-tasks nil)
+
+;; Syntax highlighting when exporting
+(require 'ox-latex)
+(add-to-list 'org-latex-packages-alist '("" "minted"))
+(setq org-latex-listings 'minted)
+(setq org-latex-pdf-process
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+(setq org-src-fontify-natively t)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((R . t)
+   (latex . t)))
+
+;; Bibtex citations exported
+(require 'ox-bibtex)
+(setq org-latex-pdf-process '("texi2dvi -p -b -V %f"))
+
+;; Add a latex class
+(add-to-list 'org-latex-classes
+             '("bjmarticle"
+               "\\documentclass{article}
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+\\usepackage{graphicx}
+\\usepackage{longtable}
+\\usepackage{hyperref}
+\\usepackage{natbib}
+\\usepackage{amssymb}
+\\usepackage{amsmath}
+\\usepackage{geometry}
+\\geometry{a4paper,left=2.5cm,top=2cm,right=2.5cm,bottom=2cm,marginparsep=7pt, marginparwidth=.6in}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+;; Latex syntax highlighting in org mode
+(setq org-highlight-latex-and-related '(latex script entities))
 
 
 ;; Misc
 ;; Word-wrapping
-(setq word-wrap t)
+(visual-line-mode 1)
+
+;; Set custom color of current line (not working IDK why..)
+;; (require 'hl-line)
+(global-hl-line-mode 1)
+(set-face-background 'hl-line "#16167f")  ; blue
+;; (set-face-foreground 'highlight nil)  ; keep syntax highlighting
+
+
+;; Custom keybindings
+;; Run src block and go to next:
+(defun execute-src-block-and-goto-next ()
+  (interactive)
+  (org-babel-execute-src-block)
+  (org-babel-next-src-block))
+;; (eval-after-load 'org
+;;   (bind-key "C-c <C-return>" #'execute-src-block-and-goto-next org-mode-map))
+(org-defkey org-mode-map (kbd "C-c <C-return>") 'execute-src-block-and-goto-next)
+
+;; Split src block:
+(org-defkey org-mode-map (kbd "C-c C--") 'jupyter-org-split-src-block)
+
+;; Send region to REPL
+(org-defkey org-mode-map (kbd "C-c r") 'python-shell-send-region)
+
+;; Send python current line to REPL
+;; (defun python-shell-send-line ()
+;;   "Execute current line in the REPL"
+;;   (interactive)
+;;   (evil-visual-line)
+;;   (python-shell-send-region)
+;;   (evil-normal-state))
