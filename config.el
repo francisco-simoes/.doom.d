@@ -276,13 +276,13 @@ checkboxes."
                 (org-level-7 . 1.1)
                 (org-level-7 . 1.1)))
   (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
-
+;;
 ;; Shorter global todo list
 (setq org-agenda-todo-list-sublevels nil)
-
+;;
 ;; Don't dim blocked todos
 (setq org-agenda-dim-blocked-tasks nil)
-
+;;
 ;; Syntax highlighting when exporting
 (require 'ox-latex)
 (add-to-list 'org-latex-packages-alist '("" "minted"))
@@ -291,18 +291,18 @@ checkboxes."
       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-
+;;
 (setq org-src-fontify-natively t)
-
+;;
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((R . t)
    (latex . t)))
-
+;;
 ;; Bibtex citations exported
 (require 'ox-bibtex)
 (setq org-latex-pdf-process '("texi2dvi -p -b -V %f"))
-
+;;
 ;; Add a latex class
 (add-to-list 'org-latex-classes
              '("bjmarticle"
@@ -322,7 +322,7 @@ checkboxes."
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
+;;
 ;; Latex syntax highlighting in org mode
 (setq org-highlight-latex-and-related '(latex script entities))
 
@@ -330,12 +330,22 @@ checkboxes."
 ;; Misc
 ;; Word-wrapping
 (visual-line-mode 1)
-
+;;
 ;; Set custom color of current line (not working IDK why..)
 ;; (require 'hl-line)
 (global-hl-line-mode 1)
 (set-face-background 'hl-line "#16167f")  ; blue
 ;; (set-face-foreground 'highlight nil)  ; keep syntax highlighting
+;;
+;; Undo
+;; evil registers actions using emacs heuristics instead of at normal state activation
+(setq evil-want-fine-undo t)
+;; activate undo-in-region for undo-fu
+;; (sacrificing some undo/redo functionality)
+(setq undo-fu-allow-undo-in-region t)
+;; C-g does not enable non-linear behaviour for undo-fu.
+;; (instead, one must use undo-fu-disable-checkpoint)
+(setq undo-fu-ignore-keyboard-quit t)
 
 
 ;; Custom keybindings
