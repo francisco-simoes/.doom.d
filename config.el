@@ -27,7 +27,6 @@
 ;; `load-theme' function. This is the default:
 ;;(setq doom-theme 'doom-one)
 ;; (setq doom-theme 'doom-vibrant)
-(setq doom-theme 'doom-outrun-electric)
 ;; (setq doom-theme 'doom-tomorrow-night)
 
 ;; If you use `org' and don't want your org files in the default location below,
@@ -125,56 +124,64 @@
 ;; Add a load-path
 (add-to-list 'load-path "~/.doom.d/load")
 
-;; Python autocompletion
-;; (use-package lsp-python-ms
-;;   :ensure t
-;;   :init (setq lsp-python-ms-auto-install-server t)
-;;   :hook (python-mode . (lambda ()
-;;                           (require 'lsp-python-ms)
-;;                           (lsp))))  ; or lsp-deferred
+;; ===================================
+;; Python
+;; ===================================
 
-;; No warning when opening Python REPL:
-(setq python-shell-prompt-detect-failure-warning nil)
-;; (setq python-shell-completion-native-enable nil) ; messes up venv...
+;; Alternative Python IDE setup :::::::::::::::::::::
+;; ;; Python autocompletion
+;; ;; (use-package lsp-python-ms
+;; ;;   :ensure t
+;; ;;   :init (setq lsp-python-ms-auto-install-server t)
+;; ;;   :hook (python-mode . (lambda ()
+;; ;;                           (require 'lsp-python-ms)
+;; ;;                           (lsp))))  ; or lsp-deferred
 
-;; Python linting
-(add-hook! 'lsp-mode-hook
-(flycheck-add-next-checker 'lsp '(warning . python-mypy))
-(flycheck-add-next-checker 'lsp '(warning . python-flake8)))
-;; venv + flake8 and mypy compatibility
-;; (defun set-flychecker-executables ()
-;;   "Configure virtualenv for flake8 and lint."
-;;   (when (get-current-buffer-flake8)
-;;     (flycheck-set-checker-executable (quote python-flake8)
-;;                                      (get-current-buffer-flake8)))
-;;   (when (get-current-buffer-pylint)
-;;     (flycheck-set-checker-executable (quote python-pylint)
-;;                                      (get-current-buffer-pylint))))
-;; (add-hook 'flycheck-before-syntax-check-hook
-;;           #'set-flychecker-executables 'local)
+;; ;; No warning when opening Python REPL:
+;; (setq python-shell-prompt-detect-failure-warning nil)
+;; ;; (setq python-shell-completion-native-enable nil) ; messes up venv...
 
-;; Python fixing with yapf (on save or on command)
-;; (setq-hook! 'python-mode-hook +format-with 'yapf)
+;; ;; Python linting
+;; (add-hook! 'lsp-mode-hook
+;; (flycheck-add-next-checker 'lsp '(warning . python-mypy))
+;; (flycheck-add-next-checker 'lsp '(warning . python-flake8)))
+
+;; ;; Python fixing with yapf (on save or on command)
+;; ;; (setq-hook! 'python-mode-hook +format-with 'yapf)
+;; (use-package! yapfify
+;;   :hook
+;;   (python-mode . yapf-mode)
+;;   (before-save . (lambda ()
+;;                    (when (eq major-mode 'python-mode)
+;;                      (yapify-buffer)))))
+;;  End of alternative Python IDE  :::::::::::::::::::::
+
+;; Elpy IDE ::::::::::::::::::::::::::::::::
+(elpy-enable)
+;; Enable Flycheck
+(when (require 'flycheck nil t)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+;; ;; Enable autopep8 on save
+;; (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+
+;; Enable yapf on save
 (use-package! yapfify
   :hook
-  (python-mode . yapf-mode)
+  (elpy-mode . yapf-mode)
   (before-save . (lambda ()
-                   (when (eq major-mode 'python-mode)
+                   (when (eq major-mode 'elpy-mode)
                      (yapify-buffer)))))
-;; Use ipython as python REPL ; matplotlib does not work in that case!
-;; (setq python-shell-interpreter "jupyter"
-;;       python-shell-interpreter-args "console --simple-prompt"
-;; (setq python-shell-interpreter "python"
-;;         python-shell-interpreter-args "-m IPython"
-;;         python-shell-prompt-detect-failure-warning nil
-;;         python-shell-completion-native-enable nil)
 
+;; Disable pylint as checker
+(setq-default flycheck-disabled-checkers '(python-pylint))
 
-;; Relative numbers
-(setq display-line-numbers-type 'relative)
+;; ::::::::::::::::::::::::::::::::
 
-
+;; ===================================
 ;; Org-mode stuff
+;; ===================================
 (defun org-convert-plain-lines-to-checklist (beg end)
   "Convert all plain lines in region to a plain list with
 checkboxes."
@@ -232,6 +239,7 @@ checkboxes."
   :hook (org-mode . org-fancy-priorities-mode)
   :config
   (setq org-fancy-priorities-list '("△" "◇" "▽")))
+
 ;; Fancy symbol for hidden content
 (defun whitespace-change-ellipsis ()
     "Change ellipsis when used with `whitespace-mode'."
@@ -241,7 +249,14 @@ checkboxes."
                               ;; (string-to-vector " ◦◦◦ "))))
                               ;; (string-to-vector " [↴↴↴] "))))
                               (string-to-vector " ▼"))))
-  (add-hook 'whitespace-mode-hook #'whitespace-change-ellipsis)
+(add-hook 'whitespace-mode-hook #'whitespace-change-ellipsis)
+
+(defun orgmode-change-ellipsis ()
+  "Change ellipsis when entering `org-mode'."
+  (set-display-table-slot standard-display-table
+                          'selective-display
+                          (string-to-vector " ▼")))
+(add-hook 'org-mode-hook #'orgmode-change-ellipsis)
 
 
 ;; Pdf stuff
@@ -327,15 +342,12 @@ checkboxes."
 (setq org-highlight-latex-and-related '(latex script entities))
 
 
+;; ===================================
 ;; Misc
+;; ===================================
 ;; Word-wrapping
 (visual-line-mode 1)
 ;;
-;; Set custom color of current line (not working IDK why..)
-;; (require 'hl-line)
-(global-hl-line-mode 1)
-(set-face-background 'hl-line "#16167f")  ; blue
-;; (set-face-foreground 'highlight nil)  ; keep syntax highlighting
 ;;
 ;; Undo
 ;; evil registers actions using emacs heuristics instead of at normal state activation
@@ -347,8 +359,24 @@ checkboxes."
 ;; (instead, one must use undo-fu-disable-checkpoint)
 (setq undo-fu-ignore-keyboard-quit t)
 
+;; Relative numbers
+(setq display-line-numbers-type 'relative)
 
+;; Avoid Python shell readline warning
+(setq python-shell-completion-native-enable nil)
+
+;; Set custom color of current line (not working IDK why..)
+;; (require 'hl-line)
+(global-hl-line-mode 1)
+(set-face-background 'hl-line "#16167f")  ; blue
+;; (set-face-foreground 'highlight nil)  ; keep syntax highlighting
+
+;; (Re)load theme AFTER customizing hl-line
+(load-theme 'doom-outrun-electric t)
+
+;; ===================================
 ;; Custom keybindings
+;; ===================================
 ;; Run src block and go to next:
 (defun execute-src-block-and-goto-next ()
   (interactive)

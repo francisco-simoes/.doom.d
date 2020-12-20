@@ -53,8 +53,13 @@
 ;; MINE ::::::::
 (package! org-super-agenda)
 (package! evil-multiedit)
-(package! elpy)
-(package! yapfify)
-(package! lsp-pyright)
 (package! org-bullets)
 (package! org-fancy-priorities)
+
+;; elpy IDE setup
+(package! elpy)
+(package! yapfify)
+(package! py-autopep8 :disable t)
+;; Alternative Python IDE setup
+;; (package! yapfify :disable t)
+(package! lsp-pyright :disable t)
