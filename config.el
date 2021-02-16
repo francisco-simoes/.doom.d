@@ -128,7 +128,28 @@
 ;; Python
 ;; ===================================
 
-;; Alternative Python IDE setup :::::::::::::::::::::
+
+;; ::::::::::::::::::::::::::::::::
+;; LSP IDE
+;; ::::::::::::::::::::::::::::::::
+; Use flake8 instead of pycodestyle for linting
+(setq lsp-pyls-configuration-sources ["flake8"])
+; Flychecker will take care of typing linting
+;; (add-to-list 'flycheck-checkers 'python-mypy t)
+
+;; ;; Python linting
+;; (add-hook! 'lsp-mode-hook
+;;         (flycheck-select-checker 'python-flake8)
+;;         (flycheck-add-next-checker 'python-flake8 'python-mypy)
+;;         ;; (flycheck-add-next-checker 'lsp '(warning . python-mypy))
+;;         ;; (flycheck-add-next-checker 'lsp '(warning . python-flake8))
+;; )
+
+;; Format with black on save
+(add-hook! 'python-mode-hook
+           (python-black-on-save-mode t)
+)
+
 ;; ;; Python autocompletion
 ;; ;; (use-package lsp-python-ms
 ;; ;;   :ensure t
@@ -141,10 +162,6 @@
 ;; (setq python-shell-prompt-detect-failure-warning nil)
 ;; ;; (setq python-shell-completion-native-enable nil) ; messes up venv...
 
-;; ;; Python linting
-;; (add-hook! 'lsp-mode-hook
-;; (flycheck-add-next-checker 'lsp '(warning . python-mypy))
-;; (flycheck-add-next-checker 'lsp '(warning . python-flake8)))
 
 ;; ;; Python fixing with yapf (on save or on command)
 ;; ;; (setq-hook! 'python-mode-hook +format-with 'yapf)
@@ -154,30 +171,33 @@
 ;;   (before-save . (lambda ()
 ;;                    (when (eq major-mode 'python-mode)
 ;;                      (yapify-buffer)))))
-;;  End of alternative Python IDE  :::::::::::::::::::::
 
 ;; Elpy IDE ::::::::::::::::::::::::::::::::
-(elpy-enable)
-;; Enable Flycheck
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
+;; (use-package elpy
+;;   :ensure t
+;;   :init
+;;   (elpy-enable)
+;;   )
+;; (setq elpy-rpc-python-command "python3")
+;; ;; (setq python-shell-interpreter "~/Environments/emacs_main/bin/python3") ;; This is what `C-c C-c` will use
+;; ;; Enable Flycheck
+;; (when (require 'flycheck nil t)
+;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
 
-;; ;; Enable autopep8 on save
-;; (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+;; ;; ;; Enable autopep8 on save
+;; ;; (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
 
-;; Enable yapf on save
-(use-package! yapfify
-  :hook
-  (elpy-mode . yapf-mode)
-  (before-save . (lambda ()
-                   (when (eq major-mode 'elpy-mode)
-                     (yapify-buffer)))))
+;; ;; Enable yapf on save
+;; (use-package! yapfify
+;;   :hook
+;;   (elpy-mode . yapf-mode)
+;;   (before-save . (lambda ()
+;;                    (when (eq major-mode 'elpy-mode)
+;;                      (yapify-buffer)))))
 
-;; Disable pylint as checker
-(setq-default flycheck-disabled-checkers '(python-pylint))
-
-;; ::::::::::::::::::::::::::::::::
+;; ;; Disable pylint as checker
+;; (setq-default flycheck-disabled-checkers '(python-pylint))
 
 ;; ===================================
 ;; Org-mode stuff
@@ -372,7 +392,12 @@ checkboxes."
 ;; (set-face-foreground 'highlight nil)  ; keep syntax highlighting
 
 ;; (Re)load theme AFTER customizing hl-line
-(load-theme 'doom-outrun-electric t)
+(load-theme 'doom-city-lights t)
+
+;; Change directory to save the "desktops" in
+(setq desktop-dirname "/home/fsimoes/.doom.d/desktop_save")
+;; Make it save automatically
+;; (desktop-save-mode 1)
 
 ;; ===================================
 ;; Custom keybindings
@@ -399,3 +424,5 @@ checkboxes."
 ;;   (evil-visual-line)
 ;;   (python-shell-send-region)
 ;;   (evil-normal-state))
+
+(setq flycheck-flake8rc "~/.config/flake8")

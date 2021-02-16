@@ -55,9 +55,10 @@
 (package! evil-multiedit)
 (package! org-bullets)
 (package! org-fancy-priorities)
+(package! python-black)
 
 ;; elpy IDE setup
-(package! elpy)
+;; (package! elpy)
 (package! yapfify)
 (package! py-autopep8 :disable t)
 ;; Alternative Python IDE setup
