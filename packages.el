@@ -64,3 +64,6 @@
 ;; Alternative Python IDE setup
 ;; (package! yapfify :disable t)
 (package! lsp-pyright :disable t)
+
+;; poetry package manager
+(package! poetry)

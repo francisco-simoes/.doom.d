@@ -388,7 +388,8 @@ checkboxes."
 ;; Set custom color of current line (not working IDK why..)
 ;; (require 'hl-line)
 (global-hl-line-mode 1)
-(set-face-background 'hl-line "#16167f")  ; blue
+;; (set-face-background 'hl-line "#16167f")  ; blue
+
 ;; (set-face-foreground 'highlight nil)  ; keep syntax highlighting
 
 ;; (Re)load theme AFTER customizing hl-line
