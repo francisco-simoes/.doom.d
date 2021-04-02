@@ -128,6 +128,8 @@
 ;; Python
 ;; ===================================
 
+;; Add correct pyenv path
+(setq exec-path (append exec-path '("~/.pyenv/bin")))
 
 ;; ::::::::::::::::::::::::::::::::
 ;; LSP IDE
