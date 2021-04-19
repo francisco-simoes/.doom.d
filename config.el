@@ -152,6 +152,10 @@
            (python-black-on-save-mode t)
 )
 
+;; easy print current word
+(fset 'fsimoes-print-this
+   (kmacro-lambda-form [?y ?i ?W ?o ?p ?r ?i ?n ?t ?\( ?f ?\" escape ?p ?a ?  ?= ?  ?\{ escape ?p ?f ?\} ?a ?\" escape ?x ?$] 0 "%d"))
+
 ;; ;; Python autocompletion
 ;; ;; (use-package lsp-python-ms
 ;; ;;   :ensure t
@@ -395,7 +399,9 @@ checkboxes."
 ;; (set-face-foreground 'highlight nil)  ; keep syntax highlighting
 
 ;; (Re)load theme AFTER customizing hl-line
-(load-theme 'doom-city-lights t)
+;; (load-theme 'doom-city-lights t)
+(load-theme 'doom-spacegrey t)
+(setq doom-spacegrey-brighter-comments t)
 
 ;; Change directory to save the "desktops" in
 (setq desktop-dirname "/home/fsimoes/.doom.d/desktop_save")
@@ -429,3 +435,4 @@ checkboxes."
 ;;   (evil-normal-state))
 
 (setq flycheck-flake8rc "~/.config/flake8")
+
