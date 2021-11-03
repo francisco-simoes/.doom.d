@@ -154,7 +154,7 @@
 
 ;; easy print current word
 (fset 'fsimoes-print-this
-   (kmacro-lambda-form [?y ?i ?W ?o ?p ?r ?i ?n ?t ?\( ?f ?\" escape ?p ?a ?  ?= ?  ?\{ escape ?p ?f ?\} ?a ?\" escape ?x ?$] 0 "%d"))
+   (kmacro-lambda-form [?y ?i ?o ?o ?p ?r ?i ?n ?t ?\( ?f ?\" escape ?p ?a ?  ?= ?  ?\{ escape ?p ?f ?\} ?a ?\" escape ?x ?$] 0 "%d"))
 
 ;; ;; Python autocompletion
 ;; ;; (use-package lsp-python-ms
@@ -332,6 +332,7 @@ checkboxes."
       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
 ;;
 (setq org-src-fontify-natively t)
 ;;
@@ -367,6 +368,11 @@ checkboxes."
 ;; Latex syntax highlighting in org mode
 (setq org-highlight-latex-and-related '(latex script entities))
 
+;; ;; Normal paragraphs within latex files
+;; (defun my-LaTeX-mode-hook()
+;;     (setq paragraph-start "\f\\|[ 	]*$")
+;;     (setq paragraph-separate "[ 	\f]*$"))
+;; (add-hook 'TeX-PDF-mode-hook 'my-LaTeX-mode-hook)
 
 ;; ===================================
 ;; Misc
@@ -400,8 +406,10 @@ checkboxes."
 
 ;; (Re)load theme AFTER customizing hl-line
 ;; (load-theme 'doom-city-lights t)
-(load-theme 'doom-spacegrey t)
-(setq doom-spacegrey-brighter-comments t)
+;; (load-theme 'doom-spacegrey t)
+;; (setq doom-spacegrey-brighter-comments t)
+(load-theme 'doom-challenger-deep t)
+(setq doom-challenger-deep-brighter-comments t)
 
 ;; Change directory to save the "desktops" in
 (setq desktop-dirname "/home/fsimoes/.doom.d/desktop_save")
@@ -436,3 +444,17 @@ checkboxes."
 
 (setq flycheck-flake8rc "~/.config/flake8")
 
+(defun fsimoes-open-xfce-terminal ()
+  (interactive "@")
+  (shell-command (concat "xfce4-terminal"
+              " > /dev/null 2>&1 & disown") nil nil))
+
+;; use paragraphs as in classic vim - do not let modes edit it
+(with-eval-after-load 'evil
+  (defadvice forward-evil-paragraph (around default-values activate)
+    (let ((paragraph-start (default-value 'paragraph-start))
+          (paragraph-separate (default-value 'paragraph-separate)))
+      ad-do-it)))
+
+;; ispell will use default dictionary if personal dictionary is set to nil.
+(setq ispell-personal-dictionary nil)
