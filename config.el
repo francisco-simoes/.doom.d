@@ -223,21 +223,26 @@ checkboxes."
 (setq process-connection-type nil)
 
 ;; Closed todo's with timestamp
-(setq org-log-done 'time)
+;; (setq org-log-done 'time)
+;; Closed todo's without timestamp:
+(setq org-log-done nil)
 
 ;; Set todo keywods
 ;; (The `!` after INPROGRESS enforces the creation of a time-stamp.)
 ;; (The `@` after WAITING enforces the creation of a note.)
 (after! org
-  (setq org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "WAITING(w@)" "IDEA(I)" "PROJECT(p)" "|" "DONE(d)" "CANCELLED(c)")))
+  (setq org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "WAITING(w@)" "IDEA(I)" "QUESTION(q)" "|" "DONE(d)" "CANCELLED(c)" "POSTPONED(P)" "ANSWER(a)" "PARTIAL(p)")))
         (setq org-todo-keyword-faces
-        '(("TODO" :foreground "yellow" :weight bold)
-                ("INPROGRESS" :foreground "magenta" :weight bold)
+        '(("TODO" :foreground "orange" :weight bold)
+                ("INPROGRESS" :foreground "dark magenta" :weight bold)
                 ("WAITING" :foreground "purple" :weight bold)
-                ("IDEA" :foreground "yellow" :weight normal)
-                ("PROJECT" :foreground "white" :weight bold)
-                ("DONE"  :foreground "green" :weight normal)
-                ("CANCELLED" :foreground "red" :weight normal)))
+                ("IDEA" :foreground "gold" :weight normal)
+                ("QUESTION" :foreground "dark goldenrod" :weight normal)
+                ("DONE"  :foreground "olive drab" :weight normal)
+                ("CANCELLED" :foreground "firebrick" :weight normal)
+                ("POSTPONED" :foreground "dark olive green" :weight normal)
+                ("ANSWER" :foreground "tomato" :weight normal)
+                ("PARTIAL" :foreground "dark olive green" :weight normal)))
         )
 
 ;; Set agenda files
@@ -316,7 +321,9 @@ checkboxes."
                 (org-level-6 . 1.1)
                 (org-level-7 . 1.1)
                 (org-level-7 . 1.1)))
-  (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+  ;; (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face))
+  (set-face-attribute (car face) nil :weight 'regular :height (cdr face))
+  )
 ;;
 ;; Shorter global todo list
 (setq org-agenda-todo-list-sublevels nil)
@@ -328,10 +335,10 @@ checkboxes."
 (require 'ox-latex)
 (add-to-list 'org-latex-packages-alist '("" "minted"))
 (setq org-latex-listings 'minted)
-(setq org-latex-pdf-process
-      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+;; (setq org-latex-pdf-process
+;;       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+;;         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+;;         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
 ;;
 (setq org-src-fontify-natively t)
@@ -343,30 +350,71 @@ checkboxes."
 ;;
 ;; Bibtex citations exported
 (require 'ox-bibtex)
-(setq org-latex-pdf-process '("texi2dvi -p -b -V %f"))
+;; (setq org-latex-pdf-process '("texi2dvi -p -b -V %f"))
+(setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+(setq reftex-default-bibliography '("~/Documents/Library/library.bib"))
+
 ;;
 ;; Add a latex class
-(add-to-list 'org-latex-classes
-             '("bjmarticle"
+(with-eval-after-load 'ox-latex
+  (add-to-list 'org-latex-classes
+        '("org-plain-latex"
                "\\documentclass{article}
-\\usepackage[utf8]{inputenc}
-\\usepackage[T1]{fontenc}
-\\usepackage{graphicx}
-\\usepackage{longtable}
-\\usepackage{hyperref}
-\\usepackage{natbib}
-\\usepackage{amssymb}
-\\usepackage{amsmath}
-\\usepackage{geometry}
-\\geometry{a4paper,left=2.5cm,top=2cm,right=2.5cm,bottom=2cm,marginparsep=7pt, marginparwidth=.6in}"
+                [NO-DEFAULT-PACKAGES]
+                [PACKAGES]
+                [EXTRA]"
                ("\\section{%s}" . "\\section*{%s}")
                ("\\subsection{%s}" . "\\subsection*{%s}")
                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (add-to-list 'org-latex-classes
+        '("fsimoes-org-plain-latex"
+               "\\documentclass{article}
+                [NO-DEFAULT-PACKAGES]
+                [PACKAGES]
+                [EXTRA]
+                \\usepackage[authoryear,square,longnamesfirst]{natbib}
+                \\usepackage[utf8]{inputenc}
+                \\usepackage[T1]{fontenc}
+                \\usepackage{graphicx}
+                \\usepackage{longtable}
+                \\usepackage{hyperref}
+                \\usepackage{amssymb}
+                \\usepackage{amsmath}
+                \\usepackage{geometry}
+                \\geometry{a4paper,left=1.5cm,top=1cm,right=1.5cm,bottom=1cm,marginparsep=7pt, marginparwidth=.6in}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (add-to-list 'org-latex-classes
+        '("bjmarticle"
+               "\\documentclass{article}
+                \\usepackage[authoryear,square,longnamesfirst]{natbib}
+                \\usepackage[utf8]{inputenc}
+                \\usepackage[T1]{fontenc}
+                \\usepackage{graphicx}
+                \\usepackage{longtable}
+                \\usepackage{hyperref}
+                \\usepackage{amssymb}
+                \\usepackage{amsmath}
+                \\usepackage{geometry}
+                \\geometry{a4paper,left=1.5cm,top=1cm,right=1.5cm,bottom=1cm,marginparsep=7pt, marginparwidth=.6in}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  )
+
 ;;
 ;; Latex syntax highlighting in org mode
 (setq org-highlight-latex-and-related '(latex script entities))
+;;
+;; cdlatex turned on for org files
+(add-hook 'org-mode-hook 'turn-on-org-cdlatex)
 
 ;; ;; Normal paragraphs within latex files
 ;; (defun my-LaTeX-mode-hook()
@@ -408,7 +456,8 @@ checkboxes."
 ;; (load-theme 'doom-city-lights t)
 ;; (load-theme 'doom-spacegrey t)
 ;; (setq doom-spacegrey-brighter-comments t)
-(load-theme 'doom-challenger-deep t)
+;; (load-theme 'doom-challenger-deep t)
+(load-theme 'doom-one t)
 (setq doom-challenger-deep-brighter-comments t)
 
 ;; Change directory to save the "desktops" in
@@ -458,3 +507,44 @@ checkboxes."
 
 ;; ispell will use default dictionary if personal dictionary is set to nil.
 (setq ispell-personal-dictionary nil)
+
+
+;; Open pdf links within emacs
+(add-to-list 'org-file-apps
+             '("\\.pdf\\'" . emacs))
+
+;; ivy-bibtex config following https://github.com/tmalsburg/helm-bibtex
+;; ivy-bibtex requires ivy's `ivy--regex-ignore-order` regex builder
+(autoload 'ivy-bibtex "ivy-bibtex" "" t)
+;; ivy-bibtex requires ivy's `ivy--regex-ignore-order` regex builder
+(setq ivy-re-builders-alist
+      '((ivy-bibtex . ivy--regex-ignore-order)
+        (t . ivy--regex-plus)))
+;;
+(setq bibtex-completion-bibliography "~/Documents/Library/library.bib")
+(setq bibtex-completion-library-path '("~/Documents/Library/CausalInference"
+                                       "~/Documents/Library/GameTheory"
+                                       "~/Documents/Library/ML"
+                                       "~/Documents/Library/Stats"
+                                       "~/Documents/Library/Probability"))
+;; One notes file per publication
+(setq bibtex-completion-notes-path "~/Documents/Notes/LibraryNotes")
+
+;; Get org-ref to play nice with ivy-bibtex (from https://github.com/jkitchin/org-ref#configuration)
+(require 'org-ref-ivy)
+(setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
+      org-ref-insert-cite-function 'org-ref-cite-insert-ivy
+      org-ref-insert-label-function 'org-ref-insert-label-link
+      org-ref-insert-ref-function 'org-ref-insert-ref-link
+      org-ref-cite-onclick-function (lambda (_) (org-ref-citation-hydra/body)))
+
+;; Org roam https://www.youtube.com/watch?v=rH3ZH95zjKM
+(setq org-roam-directory "~/Documents/Notes/Roam")
+
+;; Save notes from org-noter in the same directory as bibtex-completion
+;; (setq org-noter?????? "~/Documents/Notes/LibraryNotes")
+
+;; Latex fragments across entire buffer
+(defun fsimoes-org-latex-preview-buffer ()
+  (interactive "@")
+  (org-latex-preview '(16)))

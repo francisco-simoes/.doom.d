@@ -67,3 +67,7 @@
 
 ;; poetry package manager
 (package! poetry)
+
+;; Library and references management
+(package! ivy-bibtex)
+(package! org-ref)
