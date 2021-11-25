@@ -81,6 +81,7 @@
 
 ;; Set default pdflatex command to be latexmk to compile bibtex
 (setq pdf-latex-command "latexmk")
+;; (setq pdf-latex-command "latexmk -shell-escape -bibtex -f -pdf %f")
 
 
 ;; ;; evil-multiedit default keybindings
@@ -369,7 +370,7 @@ checkboxes."
                ("\\paragraph{%s}" . "\\paragraph*{%s}")
                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
   (add-to-list 'org-latex-classes
-        '("fsimoes-org-plain-latex"
+        '("fsimoes-org-not-so-plain-latex"
                "\\documentclass{article}
                 [NO-DEFAULT-PACKAGES]
                 [PACKAGES]
@@ -548,3 +549,10 @@ checkboxes."
 (defun fsimoes-org-latex-preview-buffer ()
   (interactive "@")
   (org-latex-preview '(16)))
+
+;; Auctex plays nicely with minted if the tex command uses the shell-escape option
+(add-hook 'TeX-mode-hook
+  (lambda ()
+    (setq TeX-command-extra-options "-shell-escape")
+  )
+)

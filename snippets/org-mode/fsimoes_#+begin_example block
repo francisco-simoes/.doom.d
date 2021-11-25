@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: fsimoes_#+begin_example block
-# key: <r
-# uuid: <r
-# --
-#+begin_remark
-`%`$0
-#+end_remark
