@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: fsimoes-question-text
+# key: <Q
+# uuid: <Q
+# --
+\colorbox{Orange}{QUESTION: `%`$0}

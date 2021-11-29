@@ -556,3 +556,26 @@ checkboxes."
     (setq TeX-command-extra-options "-shell-escape")
   )
 )
+
+;; ;; Add pipe, slash and dollar sign to possible parens to manipulate with evil-surround
+;; ;; (from https://github.com/emacs-evil/evil-surround/issues/141)
+;; ;; (Not sure it's working...)
+;; (defmacro define-and-bind-quoted-text-object (name key start-regex end-regex)
+;;   (let ((inner-name (make-symbol (concat "evil-inner-" name)))
+;;         (outer-name (make-symbol (concat "evil-a-" name))))
+;;     `(progn
+;;        (evil-define-text-object ,inner-name (count &optional beg end type)
+;;          (evil-select-paren ,start-regex ,end-regex beg end type count nil))
+;;        (evil-define-text-object ,outer-name (count &optional beg end type)
+;;          (evil-select-paren ,start-regex ,end-regex beg end type count t))
+;;        (define-key evil-inner-text-objects-map ,key #',inner-name)
+;;        (define-key evil-outer-text-objects-map ,key #',outer-name))))
+
+;; (define-and-bind-quoted-text-object "pipe" "|" "|" "|")
+;; (define-and-bind-quoted-text-object "slash" "/" "/" "/")
+;; (define-and-bind-quoted-text-object "asterisk" "*" "*" "*")
+;; (define-and-bind-quoted-text-object "dollar" "$" "\\$" "\\$") ;; sometimes your have to escape the regex
+
+;;   (define-and-bind-quoted-text-object "pipe" "|" "|" "|") ; just for sake of example
+;;   (define-and-bind-quoted-text-object "slash" "/" "/" "/") ; just for the sake of example
+;;   (define-and-bind-quoted-text-object "dollar" "$" "\\$" "\\$") ; this is the object you want
