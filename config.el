@@ -550,12 +550,37 @@ checkboxes."
   (interactive "@")
   (org-latex-preview '(16)))
 
-;; Auctex plays nicely with minted if the tex command uses the shell-escape option
+
+;; Latex files hooks for proper initializaiton!
+(defun fsimoes-activate-outline-and-hide-body ()
+  (outline-minor-mode 1)
+  (outline-hide-body) ;; fold all sections
+)
+
+(defun fsimoes-activate-folding-and-hide-buffer ()
+  (TeX-fold-mode 1)
+  (TeX-fold-buffer) ;; fold envs and macros
+)
+
 (add-hook 'TeX-mode-hook
+;; Auctex plays nicely with minted if the tex command uses the shell-escape option
   (lambda ()
     (setq TeX-command-extra-options "-shell-escape")
   )
+;;   (fsimoes-activate-outline-and-hide-body)
+;;   (fsimoes-activate-folding-and-hide-buffer)
+;; )
 )
+
+;; (add-hook 'TeX-mode-hook
+;;   (lambda ()
+;;     (setq font-latex-fontify-sectioning 3.5) ;; headers with larger font (not working)
+;;   )
+;; )
+
+(add-hook 'TeX-mode-hook 'fsimoes-activate-outline-and-hide-body)
+(add-hook 'TeX-mode-hook 'fsimoes-activate-folding-and-hide-buffer)
+;;
 
 ;; ;; Add pipe, slash and dollar sign to possible parens to manipulate with evil-surround
 ;; ;; (from https://github.com/emacs-evil/evil-surround/issues/141)
@@ -579,3 +604,4 @@ checkboxes."
 ;;   (define-and-bind-quoted-text-object "pipe" "|" "|" "|") ; just for sake of example
 ;;   (define-and-bind-quoted-text-object "slash" "/" "/" "/") ; just for the sake of example
 ;;   (define-and-bind-quoted-text-object "dollar" "$" "\\$" "\\$") ; this is the object you want
+
