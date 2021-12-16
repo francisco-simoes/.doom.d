@@ -530,6 +530,8 @@ checkboxes."
                                        "~/Documents/Library/Probability"))
 ;; One notes file per publication
 (setq bibtex-completion-notes-path "~/Documents/Notes/LibraryNotes")
+;; org-noter should use the same path
+(setq org-noter-notes-search-path '("~/Documents/Notes/LibraryNotes"))
 
 ;; Get org-ref to play nice with ivy-bibtex (from https://github.com/jkitchin/org-ref#configuration)
 (require 'org-ref-ivy)
@@ -541,6 +543,8 @@ checkboxes."
 
 ;; Org roam https://www.youtube.com/watch?v=rH3ZH95zjKM
 (setq org-roam-directory "~/Documents/Notes/Roam")
+
+
 
 ;; Save notes from org-noter in the same directory as bibtex-completion
 ;; (setq org-noter?????? "~/Documents/Notes/LibraryNotes")
