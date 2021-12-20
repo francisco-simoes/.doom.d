@@ -527,6 +527,8 @@ checkboxes."
                                        "~/Documents/Library/GameTheory"
                                        "~/Documents/Library/ML"
                                        "~/Documents/Library/Stats"
+                                       "~/Documents/Library/ComputerScience"
+                                       "~/Documents/Library/Graphs"
                                        "~/Documents/Library/Probability"))
 ;; One notes file per publication
 (setq bibtex-completion-notes-path "~/Documents/Notes/LibraryNotes")
