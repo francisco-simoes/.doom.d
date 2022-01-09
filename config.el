@@ -136,7 +136,7 @@
 ;; LSP IDE
 ;; ::::::::::::::::::::::::::::::::
 ; Use flake8 instead of pycodestyle for linting
-(setq lsp-pyls-configuration-sources ["flake8"])
+(setq lsp-pylsp-configuration-sources ["flake8"])
 ; Flychecker will take care of typing linting
 ;; (add-to-list 'flycheck-checkers 'python-mypy t)
 
@@ -232,11 +232,12 @@ checkboxes."
 ;; (The `!` after INPROGRESS enforces the creation of a time-stamp.)
 ;; (The `@` after WAITING enforces the creation of a note.)
 (after! org
-  (setq org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "WAITING(w@)" "IDEA(I)" "QUESTION(q)" "|" "DONE(d)" "CANCELLED(c)" "POSTPONED(P)" "ANSWER(a)" "PARTIAL(p)")))
+  (setq org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "WAITING(w@)" "RECURRENT(r)" "IDEA(I)" "QUESTION(q)" "|" "DONE(d)" "CANCELLED(c)" "POSTPONED(P)" "ANSWER(a)" "PARTIAL(p)")))
         (setq org-todo-keyword-faces
         '(("TODO" :foreground "orange" :weight bold)
                 ("INPROGRESS" :foreground "dark magenta" :weight bold)
                 ("WAITING" :foreground "purple" :weight bold)
+                ("RECURRENT" :foreground "orange" :weight normal)
                 ("IDEA" :foreground "gold" :weight normal)
                 ("QUESTION" :foreground "dark goldenrod" :weight normal)
                 ("DONE"  :foreground "olive drab" :weight normal)
@@ -247,7 +248,7 @@ checkboxes."
         )
 
 ;; Set agenda files
-(setq org-agenda-files '("~/org/" "~/org/OrbiskTodos/"))
+(setq org-agenda-files '("~/org/" "~/org/OrbiskTodos/" "~/Documents/Notes/Organization/"))
 
 ;; Prettier bullets
 (require 'org-bullets)
@@ -507,7 +508,7 @@ checkboxes."
       ad-do-it)))
 
 ;; ispell will use default dictionary if personal dictionary is set to nil.
-(setq ispell-personal-dictionary nil)
+(setq ispell-personal-dictionary 'nil)
 
 
 ;; Open pdf links within emacs
@@ -530,6 +531,7 @@ checkboxes."
                                        "~/Documents/Library/ComputerScience"
                                        "~/Documents/Library/Graphs"
                                        "~/Documents/Library/Probability"))
+
 ;; One notes file per publication
 (setq bibtex-completion-notes-path "~/Documents/Notes/LibraryNotes")
 ;; org-noter should use the same path
@@ -546,47 +548,48 @@ checkboxes."
 ;; Org roam https://www.youtube.com/watch?v=rH3ZH95zjKM
 (setq org-roam-directory "~/Documents/Notes/Roam")
 
+;; Children inherit priority from parents (not working I think)
+(setq org-use-property-inheritance '("PRIORITY"))
+
 
 
 ;; Save notes from org-noter in the same directory as bibtex-completion
 ;; (setq org-noter?????? "~/Documents/Notes/LibraryNotes")
 
-;; Latex fragments across entire buffer
+;; Latex fragments across entire org buffer
 (defun fsimoes-org-latex-preview-buffer ()
   (interactive "@")
   (org-latex-preview '(16)))
 
 
 ;; Latex files hooks for proper initializaiton!
-(defun fsimoes-activate-outline-and-hide-body ()
+(defun fsimoes-latex-activate-outline-and-hide-body ()
+  (interactive "@")
   (outline-minor-mode 1)
   (outline-hide-body) ;; fold all sections
 )
 
-(defun fsimoes-activate-folding-and-hide-buffer ()
+(defun fsimoes-latex-activate-folding-and-hide-buffer ()
+  (interactive "@")
   (TeX-fold-mode 1)
   (TeX-fold-buffer) ;; fold envs and macros
 )
 
+(defun fsimoes-latex-neat-folding ()
+  (interactive "@")
+  (setq font-latex-fontify-sectioning 1.5)
+  (font-latex-update-sectioning-faces)
+  (fsimoes-latex-activate-outline-and-hide-body)
+  (fsimoes-latex-activate-folding-and-hide-buffer)
+)
+
+(add-hook 'TeX-mode-hook 'fsimoes-latex-neat-folding)
 (add-hook 'TeX-mode-hook
 ;; Auctex plays nicely with minted if the tex command uses the shell-escape option
   (lambda ()
     (setq TeX-command-extra-options "-shell-escape")
   )
-;;   (fsimoes-activate-outline-and-hide-body)
-;;   (fsimoes-activate-folding-and-hide-buffer)
-;; )
 )
-
-;; (add-hook 'TeX-mode-hook
-;;   (lambda ()
-;;     (setq font-latex-fontify-sectioning 3.5) ;; headers with larger font (not working)
-;;   )
-;; )
-
-(add-hook 'TeX-mode-hook 'fsimoes-activate-outline-and-hide-body)
-(add-hook 'TeX-mode-hook 'fsimoes-activate-folding-and-hide-buffer)
-;;
 
 ;; ;; Add pipe, slash and dollar sign to possible parens to manipulate with evil-surround
 ;; ;; (from https://github.com/emacs-evil/evil-surround/issues/141)

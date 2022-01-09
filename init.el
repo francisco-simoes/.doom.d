@@ -138,7 +138,7 @@
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        (latex
-        +fold
+        ;; +fold
         +cdlatex)               ; writing papers in Emacs has never been so fun
        ;;lean
        ;;factor
@@ -159,7 +159,10 @@
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       (python +lsp +pyenv)            ; beautiful is better than ugly
+       (python
+        +lsp
+        +pyright
+        +pyenv)            ; beautiful is better than ugly
        ;; (python +pyenv)            ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
