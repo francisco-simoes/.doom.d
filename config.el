@@ -132,6 +132,7 @@
 ;; Add correct pyenv path
 (setq exec-path (append exec-path '("~/.pyenv/bin")))
 
+(setq flycheck-flake8rc "~/.config/flake8")
 ;; ::::::::::::::::::::::::::::::::
 ;; LSP IDE
 ;; ::::::::::::::::::::::::::::::::
@@ -485,6 +486,15 @@ checkboxes."
 ;; Send region to REPL
 (org-defkey org-mode-map (kbd "C-c r") 'python-shell-send-region)
 
+;; Go to heading on level above. Good for org and latex (and anything that uses outline-mode)
+(map!
+ ;; :leader
+ :desc "Go to heading one level up from current."
+ :n "g [" #'outline-up-heading)
+
+
+;; Custom functions
+;; ===================================
 ;; Send python current line to REPL
 ;; (defun python-shell-send-line ()
 ;;   "Execute current line in the REPL"
@@ -493,7 +503,6 @@ checkboxes."
 ;;   (python-shell-send-region)
 ;;   (evil-normal-state))
 
-(setq flycheck-flake8rc "~/.config/flake8")
 
 (defun fsimoes-open-xfce-terminal ()
   (interactive "@")
