@@ -488,9 +488,18 @@ checkboxes."
 
 ;; Go to heading on level above. Good for org and latex (and anything that uses outline-mode)
 (map!
- ;; :leader
  :desc "Go to heading one level up from current."
  :n "g [" #'outline-up-heading)
+
+;; Go to next visible heading.
+(map!
+ :desc "Go to next visible heading."
+ :n "] v" #'outline-next-visible-heading)
+
+;; Go to previous visible heading.
+(map!
+ :desc "Go to next visible heading."
+ :n "[ v" #'outline-previous-visible-heading)
 
 
 ;; Custom functions
