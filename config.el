@@ -225,9 +225,9 @@ checkboxes."
 (setq process-connection-type nil)
 
 ;; Closed todo's with timestamp
-;; (setq org-log-done 'time)
+(setq org-log-done 'time)
 ;; Closed todo's without timestamp:
-(setq org-log-done nil)
+;; (setq org-log-done nil)
 
 ;; Set todo keywods
 ;; (The `!` after INPROGRESS enforces the creation of a time-stamp.)
@@ -460,8 +460,9 @@ checkboxes."
 ;; (load-theme 'doom-spacegrey t)
 ;; (setq doom-spacegrey-brighter-comments t)
 ;; (load-theme 'doom-challenger-deep t)
-(load-theme 'doom-one t)
-(setq doom-challenger-deep-brighter-comments t)
+;; (load-theme 'doom-one t)
+;; (setq doom-challenger-deep-brighter-comments t)
+(disable-theme 'doom-one) ;; Not really working, idk why
 
 ;; Change directory to save the "desktops" in
 (setq desktop-dirname "/home/fsimoes/.doom.d/desktop_save")
@@ -489,17 +490,27 @@ checkboxes."
 ;; Go to heading on level above. Good for org and latex (and anything that uses outline-mode)
 (map!
  :desc "Go to heading one level up from current."
- :n "g [" #'outline-up-heading)
+ ;; :nv "g [" #'outline-up-heading)
+ :m "g [" #'outline-up-heading)
+
+;; Go to next/previous heading on same level. Good for org, latex, pdf outline (and anything that uses outline-mode)
+;; (org already had this but the other modes didn't)
+(map!
+ :desc "Go to next heading on same level."
+ :m "] h" #'outline-forward-same-level)
+(map!
+ :desc "Go to previous heading on same level."
+ :m "[ h" #'outline-backward-same-level)
 
 ;; Go to next visible heading.
 (map!
  :desc "Go to next visible heading."
- :n "] v" #'outline-next-visible-heading)
+ :m "] v" #'outline-next-visible-heading)
 
 ;; Go to previous visible heading.
 (map!
  :desc "Go to next visible heading."
- :n "[ v" #'outline-previous-visible-heading)
+ :m "[ v" #'outline-previous-visible-heading)
 
 
 ;; Custom functions
@@ -595,7 +606,7 @@ checkboxes."
 
 (defun fsimoes-latex-neat-folding ()
   (interactive "@")
-  (setq font-latex-fontify-sectioning 1.5)
+  (setq font-latex-fontify-sectioning 1.3)
   (font-latex-update-sectioning-faces)
   (fsimoes-latex-activate-outline-and-hide-body)
   (fsimoes-latex-activate-folding-and-hide-buffer)
