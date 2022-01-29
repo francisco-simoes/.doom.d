@@ -71,3 +71,6 @@
 ;; Library and references management
 (package! ivy-bibtex)
 (package! org-ref)
+
+;; Undo tree (without using buggy doom implementation)
+(package! undo-tree)

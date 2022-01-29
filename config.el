@@ -233,16 +233,16 @@ checkboxes."
 ;; (The `!` after INPROGRESS enforces the creation of a time-stamp.)
 ;; (The `@` after WAITING enforces the creation of a note.)
 (after! org
-  (setq org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "WAITING(w@)" "RECURRENT(r)" "IDEA(I)" "QUESTION(q)" "|" "DONE(d)" "CANCELLED(c)" "POSTPONED(P)" "ANSWER(a)" "PARTIAL(p)")))
+  (setq org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "RECURRENT(r)" "IDEA(I)" "QUESTION(q)" "|" "DONE(d)" "CANCELLED(c)" "WAITING(w@)" "POSTPONED(P)" "ANSWER(a)" "PARTIAL(p)")))
         (setq org-todo-keyword-faces
         '(("TODO" :foreground "orange" :weight bold)
                 ("INPROGRESS" :foreground "dark magenta" :weight bold)
-                ("WAITING" :foreground "purple" :weight bold)
                 ("RECURRENT" :foreground "orange" :weight normal)
                 ("IDEA" :foreground "gold" :weight normal)
                 ("QUESTION" :foreground "dark goldenrod" :weight normal)
                 ("DONE"  :foreground "olive drab" :weight normal)
                 ("CANCELLED" :foreground "firebrick" :weight normal)
+                ("WAITING" :foreground "purple" :weight bold)
                 ("POSTPONED" :foreground "dark olive green" :weight normal)
                 ("ANSWER" :foreground "tomato" :weight normal)
                 ("PARTIAL" :foreground "dark olive green" :weight normal)))
@@ -432,7 +432,7 @@ checkboxes."
 (visual-line-mode 1)
 ;;
 ;;
-;; Undo
+;; Undo ======
 ;; evil registers actions using emacs heuristics instead of at normal state activation
 (setq evil-want-fine-undo t)
 ;; activate undo-in-region for undo-fu
@@ -441,6 +441,38 @@ checkboxes."
 ;; C-g does not enable non-linear behaviour for undo-fu.
 ;; (instead, one must use undo-fu-disable-checkpoint)
 (setq undo-fu-ignore-keyboard-quit t)
+;; Undo with undo-tree
+(use-package! undo-tree
+  :ensure t
+  :init
+  (global-undo-tree-mode)
+  :config
+  (setq undo-tree-enable-undo-in-region nil)
+  (setq undo-tree-visualizer-diff t)
+        (defun undo-tree-visualizer-quit ()
+        "Quit the undo-tree visualizer."
+        (interactive)
+        (unless (eq major-mode 'undo-tree-visualizer-mode)
+        (user-error "Undo-tree mode not enabled in buffer"))
+        (undo-tree-clear-visualizer-data buffer-undo-tree)
+        ;; remove kill visualizer hook from parent buffer
+        (unwind-protect
+        (with-current-buffer undo-tree-visualizer-parent-buffer
+                (remove-hook 'before-change-functions 'undo-tree-kill-visualizer t))
+        ;; kill diff buffer, if any
+        (when undo-tree-visualizer-diff (undo-tree-visualizer-hide-diff))
+        (let ((parent undo-tree-visualizer-parent-buffer)
+                window)
+        ;; kill visualizer buffer - CANCELLED
+        ;; (kill-buffer nil)
+        ;; switch back to parent buffer
+        (unwind-protect
+                (if (setq window (get-buffer-window parent))
+                (select-window window)
+                (switch-to-buffer parent))))))
+)
+
+
 
 ;; Relative numbers
 (setq display-line-numbers-type 'relative)
@@ -462,7 +494,7 @@ checkboxes."
 ;; (load-theme 'doom-challenger-deep t)
 ;; (load-theme 'doom-one t)
 ;; (setq doom-challenger-deep-brighter-comments t)
-(disable-theme 'doom-one) ;; Not really working, idk why
+(setq doom-theme 'nil)
 
 ;; Change directory to save the "desktops" in
 (setq desktop-dirname "/home/fsimoes/.doom.d/desktop_save")
@@ -643,3 +675,17 @@ checkboxes."
 ;;   (define-and-bind-quoted-text-object "slash" "/" "/" "/") ; just for the sake of example
 ;;   (define-and-bind-quoted-text-object "dollar" "$" "\\$" "\\$") ; this is the object you want
 
+
+;; pdf automatically dark for acario dark theme
+(defun fsimoes-pdf-if-dark-theme-then-midnight ()
+ (interactive "@")
+ (if (member 'doom-acario-dark custom-enabled-themes)
+     (funcall
+      (lambda ()
+        (pdf-view-midnight-minor-mode t)
+        (message "Set midnight mode on because current theme is doom-acario-dark")
+        )
+      )
+   )
+)
+(add-hook 'pdf-view-mode-hook #'fsimoes-pdf-if-dark-theme-then-midnight)
