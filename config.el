@@ -494,7 +494,8 @@ checkboxes."
 ;; (load-theme 'doom-challenger-deep t)
 ;; (load-theme 'doom-one t)
 ;; (setq doom-challenger-deep-brighter-comments t)
-(setq doom-theme 'nil)
+(load-theme 'doom-acario-dark t)
+;; (setq doom-theme 'nil)
 
 ;; Change directory to save the "desktops" in
 (setq desktop-dirname "/home/fsimoes/.doom.d/desktop_save")
@@ -544,6 +545,18 @@ checkboxes."
  :desc "Go to next visible heading."
  :m "[ v" #'outline-previous-visible-heading)
 
+;; Scroll middle to top for confortable one-hand non-pdf reading
+;; (same as "M" followed by "z t" but with right hand only)
+(defun fsimoes-scroll-middle-to-top ()
+ (interactive "@")
+ (evil-window-middle)
+ (evil-scroll-line-to-top (line-number-at-pos (point)))
+)
+(map!
+ :desc "Scroll middle line to top."
+ :m "C-," #'fsimoes-scroll-middle-to-top)
+
+
 
 ;; Custom functions
 ;; ===================================
@@ -569,7 +582,7 @@ checkboxes."
       ad-do-it)))
 
 ;; ispell will use default dictionary if personal dictionary is set to nil.
-(setq ispell-personal-dictionary 'nil)
+(add-hook 'ispell-initialize-spellchecker-hook (lambda () (setq ispell-personal-dictionary 'nil)))
 
 
 ;; Open pdf links within emacs
