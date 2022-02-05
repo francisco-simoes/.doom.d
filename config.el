@@ -556,6 +556,11 @@ checkboxes."
  :desc "Scroll middle line to top."
  :m "C-," #'fsimoes-scroll-middle-to-top)
 
+;; Insert section template in latex
+(map!
+ :map latex-mode-map
+ :desc "Insert section template."
+ :ni "C-c C-s" #'LaTeX-section)
 
 
 ;; Custom functions
