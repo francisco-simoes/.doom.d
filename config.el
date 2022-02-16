@@ -562,6 +562,17 @@ checkboxes."
  :desc "Insert section template."
  :ni "C-c C-s" #'LaTeX-section)
 
+;; go backwards in pdf history
+(map!
+ :map pdf-view-mode-map
+ :desc "Go backwards in pdf history."
+ :ni "M-h" #'pdf-history-backward)
+
+;; go forwards in pdf history
+(map!
+ :map pdf-view-mode-map
+ :desc "Go forwards in pdf history."
+ :ni "M-l" #'pdf-history-forward)
 
 ;; Custom functions
 ;; ===================================
