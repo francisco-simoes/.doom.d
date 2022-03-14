@@ -620,6 +620,8 @@ checkboxes."
                                        "~/Documents/Library/Stats"
                                        "~/Documents/Library/ComputerScience"
                                        "~/Documents/Library/Graphs"
+                                       "~/Documents/Library/Physics"
+                                       "~/Documents/Library/Philosophy"
                                        "~/Documents/Library/Probability"))
 
 ;; One notes file per publication
@@ -718,3 +720,9 @@ checkboxes."
    )
 )
 (add-hook 'pdf-view-mode-hook #'fsimoes-pdf-if-dark-theme-then-midnight)
+
+;; ;; pdf keeps highlight after jumping through search results
+;; (defun fsimoes-isearch-repeat-forward ()
+;;   (interactive "@")
+;;   (isearch-repeat-forward)
+;;   ...
