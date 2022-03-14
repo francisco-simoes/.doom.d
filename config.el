@@ -574,6 +574,20 @@ checkboxes."
  :desc "Go forwards in pdf history."
  :ni "M-l" #'pdf-history-forward)
 
+;; slice pdf using bounding box
+(map!
+ :leader
+ :map pdf-view-mode-map
+ :desc "Slice pdf using bounding box."
+ :n "m s" #'pdf-view-set-slice-from-bounding-box)
+
+;; reset pdf slice
+(map!
+ :leader
+ :map pdf-view-mode-map
+ :desc "Reset pdf slice."
+ :n "m r" #'pdf-view-reset-slice)
+
 ;; Custom functions
 ;; ===================================
 ;; Send python current line to REPL
