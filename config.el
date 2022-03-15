@@ -588,6 +588,16 @@ checkboxes."
  :desc "Reset pdf slice."
  :n "m r" #'pdf-view-reset-slice)
 
+;; store link
+(map!
+ :leader
+ :desc "Store link."
+ :n "l s" #'org-store-link)
+(map!
+ :leader
+ :desc "Insert link."
+ :n "l i" #'org-insert-link)
+
 ;; Custom functions
 ;; ===================================
 ;; Send python current line to REPL
