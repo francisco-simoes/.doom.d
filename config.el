@@ -542,7 +542,7 @@ checkboxes."
 
 ;; Go to previous visible heading.
 (map!
- :desc "Go to next visible heading."
+ :desc "Go to previous visible heading."
  :m "[ v" #'outline-previous-visible-heading)
 
 ;; Scroll middle to top for confortable one-hand non-pdf reading
@@ -587,6 +587,19 @@ checkboxes."
  :map pdf-view-mode-map
  :desc "Reset pdf slice."
  :n "m r" #'pdf-view-reset-slice)
+
+;; slice pdf with mouse
+(map!
+ :leader
+ :map pdf-view-mode-map
+ :desc "Slice pdf using mouse."
+ :n "m m" #'pdf-view-set-slice-using-mouse)
+
+;; hightlight in pdf with mouse
+(map!
+ :map pdf-view-mode-map
+ :desc "Hightlight in pdf with mouse."
+ :n "<mouse-8>" #'pdf-annot-add-highlight-markup-annotation)
 
 ;; store link
 (map!
