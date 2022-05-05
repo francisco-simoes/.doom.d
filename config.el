@@ -249,7 +249,7 @@ checkboxes."
         )
 
 ;; Set agenda files
-(setq org-agenda-files '("~/org/" "~/org/OrbiskTodos/" "~/Documents/Notes/Organization/"))
+(setq org-agenda-files '("~/org/" "~/Documents/Notes/" "~/Documents/Notes/Organization/"))
 
 ;; Prettier bullets
 (require 'org-bullets)
@@ -611,6 +611,12 @@ checkboxes."
  :desc "Insert link."
  :n "l i" #'org-insert-link)
 
+;; open library bibtex entries
+(map!
+ :leader
+ :desc "Search bibtex entries using ivy."
+ :n "o i" #'ivy-bibtex)
+
 ;; Custom functions
 ;; ===================================
 ;; Send python current line to REPL
@@ -652,6 +658,7 @@ checkboxes."
 ;;
 (setq bibtex-completion-bibliography "~/Documents/Library/library.bib")
 (setq bibtex-completion-library-path '("~/Documents/Library/CausalInference"
+                                       "~/Documents/Library/Calculus"
                                        "~/Documents/Library/GameTheory"
                                        "~/Documents/Library/ML"
                                        "~/Documents/Library/Stats"

@@ -56,6 +56,7 @@
 (package! org-bullets)
 (package! org-fancy-priorities)
 (package! python-black)
+(package! command-log-mode)
 
 ;; elpy IDE setup
 ;; (package! elpy)
@@ -74,3 +75,6 @@
 
 ;; Undo tree (without using buggy doom implementation)
 (package! undo-tree)
+
+
+(package! ranger :disable t)
