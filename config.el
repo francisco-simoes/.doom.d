@@ -659,6 +659,7 @@ checkboxes."
 (setq bibtex-completion-bibliography "~/Documents/Library/library.bib")
 (setq bibtex-completion-library-path '("~/Documents/Library/CausalInference"
                                        "~/Documents/Library/Calculus"
+                                       "~/Documents/Library/CRL"
                                        "~/Documents/Library/GameTheory"
                                        "~/Documents/Library/ML"
                                        "~/Documents/Library/Stats"
