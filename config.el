@@ -253,6 +253,8 @@ checkboxes."
 
 ;; Set agenda files
 (setq org-agenda-files '("~/org/" "~/Documents/Notes/" "~/Documents/Notes/Organization/"))
+;; Set deadline warning days to 7 instead of the default 14, so that a deadline shows in org-agenda 7 days prior
+(setq org-deadline-warning-days 7)
 
 ;; Prettier bullets
 (require 'org-bullets)
