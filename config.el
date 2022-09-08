@@ -497,7 +497,8 @@ checkboxes."
 ;; (load-theme 'doom-challenger-deep t)
 ;; (load-theme 'doom-one t)
 ;; (setq doom-challenger-deep-brighter-comments t)
-(load-theme 'doom-acario-dark t)
+;; (load-theme 'doom-acario-dark t)
+(load-theme 'leuven-dark t)
 ;; (setq doom-theme 'nil)
 
 ;; Change directory to save the "desktops" in
