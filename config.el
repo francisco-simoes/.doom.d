@@ -37,6 +37,9 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
+;; No global mode line
+(global-hide-mode-line-mode)
+
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
@@ -555,6 +558,12 @@ checkboxes."
 (map!
  :desc "Scroll middle line to top."
  :m "C-," #'fsimoes-scroll-middle-to-top)
+
+;; Toggle Hide-Mode-Line mode
+(map!
+ :leader
+ :desc "Toggle Hide-Mode-Line mode"
+ :m "t h" #'global-hide-mode-line-mode)
 
 ;; Insert section template in latex
 (map!
