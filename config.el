@@ -253,8 +253,8 @@ checkboxes."
 
 ;; Set agenda files
 (setq org-agenda-files '("~/org/" "~/Documents/Notes/" "~/Documents/Notes/Organization/"))
-;; Set deadline warning days to 7 instead of the default 14, so that a deadline shows in org-agenda 7 days prior
-(setq org-deadline-warning-days 7)
+;; Set deadline warning days to 3 instead of the default 14, so that a deadline shows in org-agenda 3 days prior
+(setq org-deadline-warning-days 3)
 
 ;; Prettier bullets
 (require 'org-bullets)
@@ -709,7 +709,12 @@ checkboxes."
 (defun fsimoes-org-latex-preview-buffer ()
   (interactive "@")
   (org-latex-preview '(16)))
-
+;; Keybind the above function
+(map!
+ :map org-mode-map
+ :desc "Buffer-wide Latex previews"
+ :leader
+ :n "m L" #'fsimoes-org-latex-preview-buffer)
 
 ;; Latex files hooks for proper initializaiton!
 (defun fsimoes-latex-activate-outline-and-hide-body ()
