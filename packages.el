@@ -78,3 +78,5 @@
 
 
 (package! ranger :disable t)
+
+(package! fzf)

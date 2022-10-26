@@ -140,21 +140,27 @@
 ;; LSP IDE
 ;; ::::::::::::::::::::::::::::::::
 ; Use flake8 instead of pycodestyle for linting
-(setq lsp-pylsp-configuration-sources ["flake8"])
+(setq lsp-pylsp-configuration-sources ["flake8", "mypy"])
 ; Flychecker will take care of typing linting
+
 ;; (add-to-list 'flycheck-checkers 'python-mypy t)
 
 ;; ;; Python linting
 ;; (add-hook! 'lsp-mode-hook
 ;;         (flycheck-select-checker 'python-flake8)
-;;         (flycheck-add-next-checker 'python-flake8 'python-mypy)
+        ;; (flycheck-add-next-checker 'python-flake8 'python-mypy)
 ;;         ;; (flycheck-add-next-checker 'lsp '(warning . python-mypy))
 ;;         ;; (flycheck-add-next-checker 'lsp '(warning . python-flake8))
 ;; )
 
+
 ;; Format with black on save
 (add-hook! 'python-mode-hook
            (python-black-on-save-mode t)
+)
+
+(add-hook! 'after-save-hook
+  (py-isort-buffer)
 )
 
 ;; easy print current word
@@ -208,7 +214,7 @@
 ;;                      (yapify-buffer)))))
 
 ;; ;; Disable pylint as checker
-;; (setq-default flycheck-disabled-checkers '(python-pylint))
+(setq-default flycheck-disabled-checkers '(python-pylint))
 
 ;; ===================================
 ;; Org-mode stuff
@@ -236,7 +242,7 @@ checkboxes."
 ;; (The `!` after INPROGRESS enforces the creation of a time-stamp.)
 ;; (The `@` after WAITING enforces the creation of a note.)
 (after! org
-  (setq org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "RECURRENT(r)" "IDEA(I)" "QUESTION(q)" "|" "DONE(d)" "CANCELLED(c)" "WAITING(w@)" "POSTPONED(P)" "ANSWER(a)" "PARTIAL(p)")))
+  (setq org-todo-keywords '((sequence "TODO(t)" "INPROGRESS(i!)" "WAITING(w@)" "RECURRENT(r)" "IDEA(I)" "QUESTION(q)" "|" "DONE(d)" "CANCELLED(c)" "POSTPONED(P)" "ANSWER(a)" "PARTIAL(p)")))
         (setq org-todo-keyword-faces
         '(("TODO" :foreground "orange" :weight bold)
                 ("INPROGRESS" :foreground "dark magenta" :weight bold)
@@ -629,6 +635,13 @@ checkboxes."
  :desc "Search bibtex entries using ivy."
  :n "o i" #'ivy-bibtex)
 
+;; Create empty file when in dired mode
+(map!
+ :leader
+ :map dired-mode-map
+ :desc "Create empty file."
+ :n "f c" #'dired-create-empty-file)
+
 ;; Custom functions
 ;; ===================================
 ;; Send python current line to REPL
@@ -736,6 +749,12 @@ checkboxes."
   (fsimoes-latex-activate-outline-and-hide-body)
   (fsimoes-latex-activate-folding-and-hide-buffer)
 )
+;; Keybind the above function
+(map!
+ :map org-mode-map
+ :desc "Neat folding: pretty sections + folds."
+ :leader
+ :n "m n" #'fsimoes-latex-neat-folding)
 
 (add-hook 'TeX-mode-hook 'fsimoes-latex-neat-folding)
 (add-hook 'TeX-mode-hook
@@ -788,3 +807,22 @@ checkboxes."
 ;;   (interactive "@")
 ;;   (isearch-repeat-forward)
 ;;   ...
+
+
+
+(defun fsimoes-fzf-home ()
+  "Starts a fzf session at the home directory."
+  (interactive)
+  (let ((d "/home/fsimoes"))
+    (fzf/start d
+               (lambda (x)
+                 (let ((f (expand-file-name x d)))
+                   (when (file-exists-p f)
+                     (find-file f)))))
+  )
+)
+;; Keybind the above function
+(map!
+ :desc "Start fuzzy finder in home directory"
+ :leader
+ :n "o z" #'fsimoes-fzf-home)
