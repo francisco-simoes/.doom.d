@@ -140,8 +140,13 @@
 ;; LSP IDE
 ;; ::::::::::::::::::::::::::::::::
 ; Use flake8 instead of pycodestyle for linting
-(setq lsp-pylsp-configuration-sources ["flake8", "mypy"])
+;; (setq lsp-pylsp-configuration-sources ["flake8" "mypy"]) ;; mypy doesn't seem to be working despite me doing this...
+(setq lsp-pylsp-configuration-sources ["flake8"])
 ; Flychecker will take care of typing linting
+
+(add-hook! 'lsp-mode-hook
+  (setq lsp-ui-doc-position 'top)
+)
 
 ;; (add-to-list 'flycheck-checkers 'python-mypy t)
 
@@ -157,11 +162,13 @@
 ;; Format with black on save
 (add-hook! 'python-mode-hook
            (python-black-on-save-mode t)
+           (add-hook! 'before-save-hook 'py-isort-before-save)
 )
 
-(add-hook! 'after-save-hook
-  (py-isort-buffer)
-)
+
+;; (add-hook! 'after-save-hook
+;;   (py-isort-buffer)
+;; )
 
 ;; easy print current word
 (fset 'fsimoes-print-this
