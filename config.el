@@ -817,17 +817,14 @@ checkboxes."
 
 
 
+(require 'fzf)
 (defun fsimoes-fzf-home ()
-  "Starts a fzf session at the home directory."
+  "Starts a fzf session."
   (interactive)
   (let ((d "/home/fsimoes"))
-    (fzf/start d
-               (lambda (x)
-                 (let ((f (expand-file-name x d)))
-                   (when (file-exists-p f)
-                     (find-file f)))))
-  )
-)
+  (fzf/start d #'fzf/action-find-file)
+))
+
 ;; Keybind the above function
 (map!
  :desc "Start fuzzy finder in home directory"
