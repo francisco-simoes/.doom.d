@@ -618,6 +618,13 @@ checkboxes."
  :desc "Slice pdf using bounding box."
  :n "m s" #'pdf-view-set-slice-from-bounding-box)
 
+;; mode to automaticall slice pdf using bounding box
+(map!
+ :leader
+ :map pdf-view-mode-map
+ :desc "Automatically slice pdf pages using bounding box."
+ :n "m a" #'pdf-view-auto-slice-minor-mode)
+
 ;; reset pdf slice
 (map!
  :leader
