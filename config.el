@@ -263,7 +263,7 @@ checkboxes."
                 ("DONE"  :foreground "olive drab" :weight normal)
                 ("CANCELLED" :foreground "firebrick" :weight normal)
                 ("WAITING" :foreground "purple" :weight bold)
-                ("POSTPONED" :foreground "dark olive green" :weight normal)
+                ("POSTPONED" :foreground "dark goldenrod" :weight normal)
                 ("ANSWER" :foreground "tomato" :weight normal)
                 ("PARTIAL" :foreground "dark olive green" :weight normal)))
         )
