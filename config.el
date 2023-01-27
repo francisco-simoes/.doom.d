@@ -40,6 +40,10 @@
 ;; No global mode line
 (global-hide-mode-line-mode)
 
+;; Make mode line smaller
+;; (set-face-attribute 'mode-line nil :height 0.9)
+;; (set-face-attribute 'mode-line-inactive nil :height 0.9)
+
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
@@ -265,7 +269,7 @@ checkboxes."
         )
 
 ;; Set agenda files
-(setq org-agenda-files '("~/org/" "~/Documents/Notes/" "~/Documents/Notes/Organization/"))
+(setq org-agenda-files '("~/org/" "~/Documents/Notes/" "~/Documents/Notes/Organization/"  "~/Documents/Notes/Organization/Archive/"))
 ;; Set deadline warning days to 3 instead of the default 14, so that a deadline shows in org-agenda 3 days prior
 (setq org-deadline-warning-days 3)
 
@@ -459,36 +463,37 @@ checkboxes."
 ;; C-g does not enable non-linear behaviour for undo-fu.
 ;; (instead, one must use undo-fu-disable-checkpoint)
 (setq undo-fu-ignore-keyboard-quit t)
-;; Undo with undo-tree
-(use-package! undo-tree
-  :ensure t
-  :init
-  (global-undo-tree-mode)
-  :config
-  (setq undo-tree-enable-undo-in-region nil)
-  (setq undo-tree-visualizer-diff t)
-        (defun undo-tree-visualizer-quit ()
-        "Quit the undo-tree visualizer."
-        (interactive)
-        (unless (eq major-mode 'undo-tree-visualizer-mode)
-        (user-error "Undo-tree mode not enabled in buffer"))
-        (undo-tree-clear-visualizer-data buffer-undo-tree)
-        ;; remove kill visualizer hook from parent buffer
-        (unwind-protect
-        (with-current-buffer undo-tree-visualizer-parent-buffer
-                (remove-hook 'before-change-functions 'undo-tree-kill-visualizer t))
-        ;; kill diff buffer, if any
-        (when undo-tree-visualizer-diff (undo-tree-visualizer-hide-diff))
-        (let ((parent undo-tree-visualizer-parent-buffer)
-                window)
-        ;; kill visualizer buffer - CANCELLED
-        ;; (kill-buffer nil)
-        ;; switch back to parent buffer
-        (unwind-protect
-                (if (setq window (get-buffer-window parent))
-                (select-window window)
-                (switch-to-buffer parent))))))
-)
+
+;; ;; Undo with undo-tree
+;; (use-package! undo-tree
+;;   :ensure t
+;;   :init
+;;   (global-undo-tree-mode)
+;;   :config
+;;   (setq undo-tree-enable-undo-in-region nil)
+;;   (setq undo-tree-visualizer-diff t)
+;;         (defun undo-tree-visualizer-quit ()
+;;         "Quit the undo-tree visualizer."
+;;         (interactive)
+;;         (unless (eq major-mode 'undo-tree-visualizer-mode)
+;;         (user-error "Undo-tree mode not enabled in buffer"))
+;;         (undo-tree-clear-visualizer-data buffer-undo-tree)
+;;         ;; remove kill visualizer hook from parent buffer
+;;         (unwind-protect
+;;         (with-current-buffer undo-tree-visualizer-parent-buffer
+;;                 (remove-hook 'before-change-functions 'undo-tree-kill-visualizer t))
+;;         ;; kill diff buffer, if any
+;;         (when undo-tree-visualizer-diff (undo-tree-visualizer-hide-diff))
+;;         (let ((parent undo-tree-visualizer-parent-buffer)
+;;                 window)
+;;         ;; kill visualizer buffer - CANCELLED
+;;         ;; (kill-buffer nil)
+;;         ;; switch back to parent buffer
+;;         (unwind-protect
+;;                 (if (setq window (get-buffer-window parent))
+;;                 (select-window window)
+;;                 (switch-to-buffer parent))))))
+;; )
 
 
 
@@ -948,3 +953,10 @@ checkboxes."
 
 (map!
  :g "C-M-k" #'sow-scroll-other-window)
+
+
+;; Save agenda when saving session [suggested by chatgpt, but desktop-globals-to-save is undefined...]
+;; (add-to-list 'desktop-globals-to-save 'org-agenda-files)
+;; Save pdf scale when saving session
+;; (add-to-list 'desktop-globals-to-save 'pdf-view-mode-text-scale)
+

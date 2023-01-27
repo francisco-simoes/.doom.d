@@ -73,8 +73,8 @@
 (package! ivy-bibtex)
 (package! org-ref)
 
-;; Undo tree (without using buggy doom implementation)
-(package! undo-tree)
+;; [don't use] Undo tree (without using buggy doom implementation)
+(package! undo-tree :disable t)
 
 
 (package! ranger :disable t)
