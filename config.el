@@ -548,6 +548,11 @@ checkboxes."
  :desc "Paste from kill ring"
  :n "k p" #'yank-from-kill-ring)
 
+;; g0 to go to start of text in line
+(map!
+ :desc "Go to start of text in line"
+ :n "g 0" #'beginning-of-line-text)
+
 ;; Run src block and go to next:
 (defun execute-src-block-and-goto-next ()
   (interactive)
