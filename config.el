@@ -263,7 +263,7 @@ checkboxes."
                 ("DONE"  :foreground "olive drab" :weight normal)
                 ("CANCELLED" :foreground "firebrick" :weight normal)
                 ("WAITING" :foreground "purple" :weight bold)
-                ("POSTPONED" :foreground "dark goldenrod" :weight normal)
+                ("POSTPONED" :foreground "DarkOrange4" :weight normal)
                 ("ANSWER" :foreground "tomato" :weight normal)
                 ("PARTIAL" :foreground "dark olive green" :weight normal)))
         )
@@ -541,6 +541,13 @@ checkboxes."
 ;; ===================================
 ;; Custom keybindings
 ;; ===================================
+
+;; Go to heading on level above. Good for org and latex (and anything that uses outline-mode)
+(map!
+ :leader
+ :desc "Paste from kill ring"
+ :n "k p" #'yank-from-kill-ring)
+
 ;; Run src block and go to next:
 (defun execute-src-block-and-goto-next ()
   (interactive)
