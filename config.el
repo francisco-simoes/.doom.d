@@ -533,6 +533,9 @@ checkboxes."
         )
 )
 
+;; pdf midnight mode in pure black and white
+(setq pdf-view-midnight-colors '("#ffffff" . "#000000"))
+
 ;; Change directory to save the "desktops" in
 (setq desktop-dirname "/home/fsimoes/.doom.d/desktop_save")
 ;; Make it save automatically
@@ -880,8 +883,8 @@ checkboxes."
 
 ;; pdf automatically dark for acario dark theme
 (defun fsimoes-pdf-if-dark-theme-then-midnight ()
- (interactive "@")
- (if (member 'doom-acario-dark custom-enabled-themes)
+ ;; (if (member 'doom-acario-dark custom-enabled-themes)
+ (if (member 'leuven-dark custom-enabled-themes)
      (funcall
       (lambda ()
         (pdf-view-midnight-minor-mode t)
