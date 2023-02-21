@@ -542,7 +542,54 @@ checkboxes."
 ;; Custom keybindings
 ;; ===================================
 
-;; Go to heading on level above. Good for org and latex (and anything that uses outline-mode)
+;; Go to next begin of latex env
+(defun fsimoes-latex-next-env-begin ()
+  (interactive)
+  (search-forward "\\begin{")
+)
+(map!
+ :after latex
+ :map latex-mode-map
+ :desc "Go to next begin of latex env"
+ :leader
+ :n "] e" #'fsimoes-latex-next-env-begin)
+
+;; Go to previous begin of latex env
+(defun fsimoes-latex-previous-env-begin ()
+  (interactive)
+  (search-backward "\\begin{")
+)
+(map!
+ :after latex
+ :map latex-mode-map
+ :desc "Go to previous begin of latex env"
+ :leader
+ :n "[ e" #'fsimoes-latex-previous-env-begin)
+
+;; Go to previous end of latex env
+(defun fsimoes-latex-previous-env-end ()
+  (interactive)
+  (search-backward "\\end{")
+)
+(map!
+ :after latex
+ :map latex-mode-map
+ :desc "Go to previous end of latex env"
+ :leader
+ :n "[ E" #'fsimoes-latex-previous-env-end)
+
+;; Go to next end of latex env
+(defun fsimoes-latex-next-env-end ()
+  (interactive)
+  (search-forward "\\end{")
+)
+(map!
+ :after latex
+ :map latex-mode-map
+ :desc "Go to next end of latex env"
+ :leader
+ :n "] E" #'fsimoes-latex-next-env-end)
+
 (map!
  :leader
  :desc "Paste from kill ring"
