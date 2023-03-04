@@ -533,9 +533,6 @@ checkboxes."
         )
 )
 
-;; pdf midnight mode in pure black and white
-(setq pdf-view-midnight-colors '("#ffffff" . "#000000"))
-
 ;; Change directory to save the "desktops" in
 (setq desktop-dirname "/home/fsimoes/.doom.d/desktop_save")
 ;; Make it save automatically
@@ -881,19 +878,31 @@ checkboxes."
 ;;   (define-and-bind-quoted-text-object "dollar" "$" "\\$" "\\$") ; this is the object you want
 
 
-;; pdf automatically dark for acario dark theme
+;; Midnight mode automatically on for leuven-dark theme
 (defun fsimoes-pdf-if-dark-theme-then-midnight ()
  ;; (if (member 'doom-acario-dark custom-enabled-themes)
  (if (member 'leuven-dark custom-enabled-themes)
      (funcall
       (lambda ()
         (pdf-view-midnight-minor-mode t)
-        (message "Set midnight mode on because current theme is doom-acario-dark")
+        ;; (message "Set midnight mode on because current theme is doom-acario-dark")
+        (message "Set midnight mode on because current theme is leuven-dark")
         )
       )
    )
 )
 (add-hook 'pdf-view-mode-hook #'fsimoes-pdf-if-dark-theme-then-midnight)
+
+;; Pure black and white for pdf midnight mode
+(defun fsimoes-pdf-midnight-mode-pure-black-and-white ()
+        (funcall
+           (lambda ()
+             (setq pdf-view-midnight-colors '("#ffffff" . "#000000")) ;; Set to pure black and white
+           )
+        )
+)
+(add-hook 'pdf-view-mode-hook #'fsimoes-pdf-midnight-mode-pure-black-and-white)
+
 
 ;; ;; pdf keeps highlight after jumping through search results
 ;; (defun fsimoes-isearch-repeat-forward ()
@@ -1021,4 +1030,3 @@ checkboxes."
 ;; (add-to-list 'desktop-globals-to-save 'org-agenda-files)
 ;; Save pdf scale when saving session
 ;; (add-to-list 'desktop-globals-to-save 'pdf-view-mode-text-scale)
-
