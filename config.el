@@ -663,6 +663,16 @@ checkboxes."
  :desc "Insert section template."
  :ni "C-c C-s" #'LaTeX-section)
 
+;; pdf scroll up/down using capital K and J
+(map!
+ :map pdf-view-mode-map
+ :desc "Scroll up."
+ :ni "K" #'pdf-view-scroll-up-or-next-page)
+(map!
+ :map pdf-view-mode-map
+ :desc "Scroll down."
+ :ni "J" #'pdf-view-scroll-down-or-previous-page)
+
 ;; go backwards in pdf history
 (map!
  :map pdf-view-mode-map
