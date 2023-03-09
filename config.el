@@ -666,12 +666,12 @@ checkboxes."
 ;; pdf scroll up/down using capital K and J
 (map!
  :map pdf-view-mode-map
- :desc "Scroll up."
- :ni "K" #'pdf-view-scroll-up-or-next-page)
+ :desc "Scroll down."
+ :ni "J" #'pdf-view-scroll-up-or-next-page)
 (map!
  :map pdf-view-mode-map
- :desc "Scroll down."
- :ni "J" #'pdf-view-scroll-down-or-previous-page)
+ :desc "Scroll up."
+ :ni "K" #'pdf-view-scroll-down-or-previous-page)
 
 ;; go backwards in pdf history
 (map!
