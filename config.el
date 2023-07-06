@@ -269,7 +269,12 @@ checkboxes."
         )
 
 ;; Set agenda files
-(setq org-agenda-files '("~/org/" "~/Documents/Notes/" "~/Documents/Notes/Organization/"  "~/Documents/Notes/Organization/Archive/"))
+
+;; First get files under "ExplorationIdeas" with todos
+(defvar explorationideas-todos (directory-files-recursively "~/Documents/Notes/ExplorationIdeas/" ".*todos.*")) ;; All files names ...todos...
+;; (setq explorationideas-todos '(seq-filter 'file-directory-p (directory-files-recursively "~/Documents/Notes/ExplorationIdeas/" "" t))) ;; If I wanted ALL subdirectories
+
+(setq org-agenda-files (append '("~/org/" "~/Documents/Notes/" "~/Documents/Notes/Organization/"  "~/Documents/Notes/Organization/Archive/") explorationideas-todos))
 ;; Set deadline warning days to 3 instead of the default 14, so that a deadline shows in org-agenda 3 days prior
 (setq org-deadline-warning-days 3)
 
@@ -542,6 +547,12 @@ checkboxes."
 ;; Custom keybindings
 ;; ===================================
 
+;; Access previous commands after doing command-repeat
+(map!
+ :n "M-." #'evil-repeat-pop)
+(map!
+ :n "M->" #'evil-repeat-pop-next)
+
 ;; Go to next begin of latex env
 (defun fsimoes-latex-next-env-begin ()
   (interactive)
@@ -619,26 +630,26 @@ checkboxes."
 (map!
  :desc "Go to heading one level up from current."
  ;; :nv "g [" #'outline-up-heading)
- :m "g [" #'outline-up-heading)
+ :mv "g [" #'outline-up-heading)
 
 ;; Go to next/previous heading on same level. Good for org, latex, pdf outline (and anything that uses outline-mode)
 ;; (org already had this but the other modes didn't)
 (map!
  :desc "Go to next heading on same level."
- :m "] h" #'outline-forward-same-level)
+ :mv "] h" #'outline-forward-same-level)
 (map!
  :desc "Go to previous heading on same level."
- :m "[ h" #'outline-backward-same-level)
+ :mv "[ h" #'outline-backward-same-level)
 
 ;; Go to next visible heading.
 (map!
  :desc "Go to next visible heading."
- :m "] v" #'outline-next-visible-heading)
+ :mv "] v" #'outline-next-visible-heading)
 
 ;; Go to previous visible heading.
 (map!
  :desc "Go to previous visible heading."
- :m "[ v" #'outline-previous-visible-heading)
+ :mv "[ v" #'outline-previous-visible-heading)
 
 ;; Scroll middle to top for confortable one-hand non-pdf reading
 ;; (same as "M" followed by "z t" but with right hand only)
@@ -792,7 +803,8 @@ checkboxes."
                                        "~/Documents/Library/Graphs"
                                        "~/Documents/Library/Physics"
                                        "~/Documents/Library/Philosophy"
-                                       "~/Documents/Library/Probability"))
+                                       "~/Documents/Library/Probability"
+                                       "~/Documents/Library/RL"))
 
 ;; One notes file per publication
 (setq bibtex-completion-notes-path "~/Documents/Notes/LibraryNotes")
@@ -1040,3 +1052,29 @@ checkboxes."
 ;; (add-to-list 'desktop-globals-to-save 'org-agenda-files)
 ;; Save pdf scale when saving session
 ;; (add-to-list 'desktop-globals-to-save 'pdf-view-mode-text-scale)
+
+
+;; Caps lock notice
+;; (require 'dash)
+;; (require 's)
+
+;; (defun x-led-mask ()
+;;   "Get the current status of the LED mask from X."
+;;   (with-temp-buffer
+;;     (call-process "xset" nil t nil "q")
+;;     (let ((led-mask-string
+;;            (->> (buffer-string)
+;;                 s-lines
+;;                 (--first (s-contains? "LED mask" it))
+;;                 s-split-words
+;;                 -last-item)))
+;;       (string-to-number led-mask-string 16))))
+
+;; (defun caps-lock-on (led-mask)
+;;   "Return non-nil if caps lock is on."
+;;   (eq (logand led-mask 1) 1))
+
+;; (define-minor-mode caps-lock-show-mode
+;;   "Display whether caps lock is on."
+;;   :global t
+;;   :lighter (:eval (if (caps-lock-on (x-led-mask)) " CAPS-LOCK" "")))
