@@ -523,7 +523,7 @@ checkboxes."
 ;; (load-theme 'doom-one t)
 ;; (setq doom-challenger-deep-brighter-comments t)
 ;; (load-theme 'doom-acario-dark t)
-(load-theme 'leuven-dark t)
+(load-theme 'leuven t)
 ;; (setq doom-theme 'nil)
 
 ;; light gray as pdf background when using Leuven theme:
@@ -868,9 +868,11 @@ checkboxes."
  :leader
  :n "m n" #'fsimoes-latex-neat-folding)
 
-(add-hook 'TeX-mode-hook 'fsimoes-latex-neat-folding)
-(add-hook 'TeX-mode-hook
+(add-hook 'latex-mode #'fsimoes-latex-neat-folding)
+
+
 ;; Auctex plays nicely with minted if the tex command uses the shell-escape option
+(add-hook 'TeX-mode-hook
   (lambda ()
     (setq TeX-command-extra-options "-shell-escape")
   )
@@ -1078,3 +1080,18 @@ checkboxes."
 ;;   "Display whether caps lock is on."
 ;;   :global t
 ;;   :lighter (:eval (if (caps-lock-on (x-led-mask)) " CAPS-LOCK" "")))
+
+
+;; Define list of repos to check with Magit at once
+(setq magit-repository-directories '(("/home/fsimoes/Documents/MyArticles/" . 0)
+                                     ("/home/fsimoes/Documents/Presentations/" . 0)
+                                     ("/home/fsimoes/Documents/Notes/" . 0)
+                                     ("/home/fsimoes/Documents/Personal/francisco-simoes.github.io/" . 0)
+                                     ("/home/fsimoes/.doom.d/" . 0)
+                                     ("/home/fsimoes/.emacs.d/" . 0)
+                                     ("/home/fsimoes/.oh-my-zsh/" . 0)
+                                     ))
+
+; Magit repo list will also have a column with the status of the repo
+(add-to-list 'magit-repolist-columns
+             '("Status" 10 magit-repolist-column-flag) t )
