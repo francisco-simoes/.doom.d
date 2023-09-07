@@ -553,6 +553,14 @@ checkboxes."
 (map!
  :n "M->" #'evil-repeat-pop-next)
 
+;; Go to pdf position corresponding to tex position
+(map!
+ :after latex
+ :map latex-mode-map
+ :desc "Go to pdf position"
+ :leader
+ :n "g p" #'pdf-sync-forward-search)
+
 ;; Go to next begin of latex env
 (defun fsimoes-latex-next-env-begin ()
   (interactive)
@@ -1092,6 +1100,6 @@ checkboxes."
                                      ("/home/fsimoes/.oh-my-zsh/" . 0)
                                      ))
 
-; Magit repo list will also have a column with the status of the repo
-(add-to-list 'magit-repolist-columns
-             '("Status" 10 magit-repolist-column-flag) t )
+;; ; Magit repo list will also have a column with the status of the repo
+;; (add-to-list 'magit-repolist-columns
+;;              '("Status" 10 magit-repolist-column-flag) t )
