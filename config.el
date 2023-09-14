@@ -90,6 +90,9 @@
 (setq pdf-latex-command "latexmk")
 ;; (setq pdf-latex-command "latexmk -shell-escape -bibtex -f -pdf %f")
 
+;; Do not hide anything from dired
+(remove-hook 'dired-mode-hook #'dired-omit-mode)
+
 
 ;; ;; evil-multiedit default keybindings
 ;; ;; Highlights all matches of the selection in the buffer.
