@@ -561,6 +561,14 @@ checkboxes."
  :leader
  :n "g p" #'pdf-sync-forward-search)
 
+;; Go to tex position corresponding to pdf position
+(map!
+ :after pdf-view
+ :map pdf-view-mode-map
+ :desc "Go to tex position"
+ :leader
+ :n "g /" #'pdf-isearch-sync-backward)
+
 ;; Go to next begin of latex env
 (defun fsimoes-latex-next-env-begin ()
   (interactive)
