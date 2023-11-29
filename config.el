@@ -62,6 +62,9 @@
 ;; they are implemented.
 
 ;; :::::::::::::::: MINE ::::::::::::::::::
+;; Agenda on start up
+(add-hook 'after-init-hook 'org-agenda-list)
+
 ;; No transparency
 (add-to-list 'default-frame-alist '(alpha 100))
 
@@ -765,6 +768,13 @@ checkboxes."
  :desc "Search bibtex entries using ivy."
  :n "o i" #'ivy-bibtex)
 
+;; cite in org
+(map!
+ :leader
+ :map org-mode-map
+ :desc "Cite bibtex entries using ivy."
+ :n "m i" #'org-ref-cite-insert-ivy)
+
 ;; Create empty file when in dired mode
 (map!
  :leader
@@ -823,6 +833,7 @@ checkboxes."
                                        "~/Documents/Library/Physics"
                                        "~/Documents/Library/Philosophy"
                                        "~/Documents/Library/Probability"
+                                       "~/Documents/Library/Algebra"
                                        "~/Documents/Library/RL"))
 
 ;; One notes file per publication
