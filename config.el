@@ -176,6 +176,13 @@
 )
 
 
+(defun fsimoes-lsp-see-pipenv ()
+ (interactive "@")
+ (pipenv-deactivate)
+ (pipenv-activate)
+ (lsp-restart-workspace))
+
+
 ;; (add-hook! 'after-save-hook
 ;;   (py-isort-buffer)
 ;; )
